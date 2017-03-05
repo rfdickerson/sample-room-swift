@@ -29,12 +29,20 @@ let workspaceID = "6371a8bb-c167-4ff7-9ec1-c61e4d1be863"
 
 let failure = { (error: Error) in print(error) }
 
-var context: Context? // save context to continue conversation
-
-
 public class RoomImplementation {
         
+    var context: Context? // save context to continue conversation
+
     let roomDescription = RoomDescription()
+
+    public init() {
+
+         conversation.message(withWorkspace: workspaceID, failure: failure) { response in
+                print(response.output.text)
+                self.context = response.context
+            }
+
+    }
     
     public func handleMessage(messageStr: String, endpoint: RoomEndpoint, connection: WebSocketConnection) throws {
         
@@ -61,11 +69,6 @@ public class RoomImplementation {
             
         case "roomJoin":
             
-            conversation.message(withWorkspace: workspaceID, failure: failure) { response in
-                print(response.output.text)
-                context = response.context
-            }
-
             try endpoint.sendMessage(connection: connection,
                                  message: Message.createLocationMessage(userId: userId, roomDescription: self.roomDescription))
             
@@ -104,7 +107,9 @@ public class RoomImplementation {
                 conversation.message(withWorkspace: workspaceID, request: request, failure: failure) {
                     response in
                     print(response.output.text)
-                    context = response.context
+                    try! endpoint.sendMessage(connection: connection,
+                                         message: Message.createChatMessage(username: username, message: response.output.text[0]))
+                    self.context = response.context
                 }
 
                 try endpoint.sendMessage(connection: connection,
