@@ -14,15 +14,9 @@
     <body>
         <div ng-controller="GameOnController as gameOn" ng-model="gameOn.connected.value" class="container">
             <div class="alignCenter">
-                <br/><br/>
-                <h1>Your room is running! </h1>
-                <br/>
-                <h2>Test out your room... </h2>
                 
-                </br>
                 <button id="connectButton" ng-click="gameOn.connect()" class="btn btn-primary" type="button" ng-disabled="gameOn.connected.value">Start chat</button>
                 <button id="disconnectButton" ng-click="gameOn.disconnect()" class="btn btn-primary" type="button" ng-disabled="!gameOn.connected.value">End chat</button>
-                <br/>
             </div>
             <br/>
             <br/>

@@ -107,8 +107,15 @@ public class RoomImplementation {
                 conversation.message(withWorkspace: workspaceID, request: request, failure: failure) {
                     response in
                     print(response.output.text)
-                    try! endpoint.sendMessage(connection: connection,
-                                         message: Message.createChatMessage(username: "Watson", message: response.output.text[0]))
+
+                    if response.output.text.count > 0 {
+
+                        let text = response.output.text[0]
+                        try! endpoint.sendMessage(connection: connection,
+                                         message: Message.createChatMessage(username: "Watson", message: text ))
+
+                    }
+                    
                     self.context = response.context
                 }
 
