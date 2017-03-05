@@ -108,7 +108,7 @@ public class RoomImplementation {
                     response in
                     print(response.output.text)
                     try! endpoint.sendMessage(connection: connection,
-                                         message: Message.createChatMessage(username: username, message: response.output.text[0]))
+                                         message: Message.createChatMessage(username: "Watson", message: response.output.text[0]))
                     self.context = response.context
                 }
 
