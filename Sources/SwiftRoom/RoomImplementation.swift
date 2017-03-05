@@ -19,6 +19,19 @@ import Foundation
 import KituraWebSocket
 import SwiftyJSON
 
+import ConversationV1
+
+let username = "f4a41bb7-55de-4cf0-8f62-241fcc9437e9"
+let password = "4KVOiGQKmpLa"
+let version = "2017-03-05" // use today's date for the most recent version
+let conversation = Conversation(username: username, password: password, version: version)
+let workspaceID = "6371a8bb-c167-4ff7-9ec1-c61e4d1be863"
+
+let failure = { (error: Error) in print(error) }
+
+var context: Context? // save context to continue conversation
+
+
 public class RoomImplementation {
         
     let roomDescription = RoomDescription()
@@ -48,6 +61,11 @@ public class RoomImplementation {
             
         case "roomJoin":
             
+            conversation.message(withWorkspace: workspaceID, failure: failure) { response in
+                print(response.output.text)
+                context = response.context
+            }
+
             try endpoint.sendMessage(connection: connection,
                                  message: Message.createLocationMessage(userId: userId, roomDescription: self.roomDescription))
             
@@ -68,7 +86,7 @@ public class RoomImplementation {
             break;
             
         case "room":
-            
+
             // This message will be either a command or a chat
             guard let payloadJSON = (message.payload).data(using: String.Encoding.utf8) else {
                 throw SwiftRoomError.errorInJSONProcessing
@@ -81,6 +99,14 @@ public class RoomImplementation {
                 try processCommand(message: message, content: content, endpoint: endpoint, connection: connection)
             }
             else {
+
+                let request = MessageRequest(text: content, context: context)
+                conversation.message(withWorkspace: workspaceID, request: request, failure: failure) {
+                    response in
+                    print(response.output.text)
+                    context = response.context
+                }
+
                 try endpoint.sendMessage(connection: connection,
                                          message: Message.createChatMessage(username: username, message: content))
             }
