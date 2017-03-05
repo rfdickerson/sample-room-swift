@@ -10,7 +10,7 @@ var child = require('child_process');
 var server = null;
 
 gulp.task('sass', function() {
-    return gulp.src('./public/sass/*.scss')
+    return gulp.src('./src/client/sass/*.scss')
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('./public/css/'))
 	.pipe(browserSync.reload({
@@ -47,6 +47,11 @@ gulp.task('compile:swift', function() {
     })
 });
 
+gulp.task('index', function() {
+    return gulp.src('./src/client/html/index.html')
+        .pipe(gulp.dest('public/'))
+});
+
 gulp.task('run:server', function() {
     if (server)
         server.kill();
@@ -58,4 +63,5 @@ gulp.task('run:server', function() {
         });
 });
 
-gulp.task('default', ['webpack','sass','compile:swift']);
+gulp.task('default', 
+    ['index', 'webpack', 'sass', 'compile:swift']);
