@@ -1,6 +1,23 @@
-var app = angular.module('gameOnApp', [])
+//var App = angular.module('gameOnApp', [])
 
-app.controller('GameOnController', function ($timeout) {
+import angular from 'angular';
+import tether from 'tether';
+
+
+export default class GameOnSwift {
+
+     constructor($timeout){
+
+        this.controllerName = "GameOn Controller";
+        this.websocket = null;
+        this.websocketUrl = "ws://" + window.document.location.host + "/room";
+     };
+};
+
+
+
+/** 
+App.controller('GameOnController', function ($timeout) {
 
     var gameOn = this;
 
@@ -203,7 +220,7 @@ app.controller('GameOnController', function ($timeout) {
     }
 });
 
-app.directive('ngEnter', function () {
+App.directive('ngEnter', function () {
     return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {
             if (event.which === 13) {
@@ -216,3 +233,7 @@ app.directive('ngEnter', function () {
         });
     };
 });
+
+export default App;
+
+*/

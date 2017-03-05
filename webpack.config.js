@@ -5,7 +5,7 @@ var BUILD_DIR = path.resolve(__dirname, 'public');
 var APP_DIR = path.resolve(__dirname, 'src/client/app');
 
 var config = {
-    entry: APP_DIR + '/index.jsx',
+    entry: APP_DIR + '/app.jsx',
     output: {
         filename: 'js/bundle.js',
         path: BUILD_DIR
@@ -42,18 +42,7 @@ var config = {
                 loader: 'url?limit=10000&mimetype=image/svg+xml'
             }
         ]
-    },
-    plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            sourceMap: true, 
-            beautify: false,
-            compress: {
-                screw_ie8: true,
-                warnings: false 
-            },
-            comments: false
-        })
-    ]
+    }
 };
 
 module.exports = config;
